@@ -1,0 +1,36 @@
+{
+  "name": "requester-be",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/serifcolakel/requester-be.git"
+  },
+  "keywords": [],
+  "author": "Serif Çolakel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/serifcolakel/requester-be/issues"
+  },
+  "homepage": "https://github.com/serifcolakel/requester-be#readme",
+  "dependencies": {
+    "@fastify/env": "^4.2.0",
+    "@fastify/jwt": "^7.2.2",
+    "@prisma/client": "^5.4.2",
+    "fastify": "^4.24.3",
+    "fastify-zod": "^1.4.0",
+    "zod": "^3.22.4",
+    "zod-to-json-schema": "^3.21.4"
+  },
+  "devDependencies": {
+    "@types/fastify-jwt": "^0.8.1",
+    "@types/node": "^20.8.7",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.2.2"
+  }
+}
