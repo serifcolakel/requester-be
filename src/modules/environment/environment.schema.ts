@@ -1,70 +1,62 @@
 import { buildJsonSchemas } from "fastify-zod";
 import { z } from "zod";
-import { User } from "@prisma/client";
 import { baseResponseSchema } from "@utils/schemas";
+import { EnvironmentModel } from "@models";
 
-const createEnvironmentRequest = z.object({
-  name: z.string().min(1).max(255),
-  veriables: z
-    .array(
-      z.object({
-        name: z.string().min(1).max(255),
-        value: z.string().min(1).max(255),
-      })
-    )
-    .optional(),
+export const createEnvironmentRequest = EnvironmentModel.pick({
+  name: true,
+  veriables: true,
 });
 
-export type CreateEnvironmentRequest = z.infer<
-  typeof createEnvironmentRequest
-> & {
-  userId: User["id"];
-};
-
-const environmentResponseSchema = z.object({
-  id: z.number().int(),
-  name: z.string().min(1).max(255),
-  userId: z.number().int(),
-});
-
-// list response, udpate delete create response
-
-const variableSchema = z.object({
-  name: z.string().min(1).max(255),
-  value: z.string().min(1).max(255),
-  environmentId: z.number().int(),
-});
-
-const variableResponseSchema = z.object({
-  id: z.number().int(),
-  name: z.string().min(1).max(255),
-  value: z.string().min(1).max(255),
-  environmentId: z.number().int(),
-});
-
-const environmentListSchema = baseResponseSchema(
-  z.array(environmentResponseSchema)
+export const createEnvironmentResponse = baseResponseSchema(
+  EnvironmentModel.pick({
+    id: true,
+    name: true,
+    userId: true,
+  })
 );
 
-export type GetAllEnvironmentsResponse = z.infer<typeof environmentListSchema>;
+export const deleteEnvironmentResponse = baseResponseSchema(
+  EnvironmentModel.pick({
+    id: true,
+    name: true,
+    userId: true,
+  })
+);
 
-const environmentSchema = baseResponseSchema(environmentResponseSchema);
+export const updateEnvironmentRequest = EnvironmentModel.pick({
+  name: true,
+  veriables: true,
+});
 
-export type TGetSingleEnvironmentsResponse = z.infer<typeof environmentSchema>;
+export const updateEnvironmentResponse = baseResponseSchema(
+  EnvironmentModel.pick({
+    id: true,
+    name: true,
+    userId: true,
+  })
+);
 
-export type EnvironmentResponse = z.infer<typeof environmentResponseSchema>;
+export const environmentListResponse = baseResponseSchema(
+  z.array(
+    EnvironmentModel.pick({
+      id: true,
+      name: true,
+    })
+  )
+);
 
 export const { schemas: environmentSchemas, $ref: environmentSchemasRef } =
   buildJsonSchemas(
     {
-      environmentSchema,
-      environmentResponseSchema,
-      variableSchema,
-      variableResponseSchema,
-      environmentListSchema,
+      createEnvironmentResponse,
       createEnvironmentRequest,
+      environmentListResponse,
+      deleteEnvironmentResponse,
+      updateEnvironmentRequest,
+      updateEnvironmentResponse,
     },
     {
-      $id: "environment",
+      $id: "EnvironmentSchemas",
     }
   );

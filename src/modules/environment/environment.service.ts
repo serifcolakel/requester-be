@@ -1,5 +1,6 @@
 import db from "@lib/db";
-import { CreateEnvironmentRequest } from "./environment.schema";
+import { CreateEnvironmentRequest } from "./environment.type";
+import { Environment, User } from "@prisma/client";
 
 export async function createEnvironment(data: CreateEnvironmentRequest) {
   const environment = await db.environment.create({
@@ -9,20 +10,45 @@ export async function createEnvironment(data: CreateEnvironmentRequest) {
   return environment;
 }
 
-export async function getUserByEmail(email: string) {
-  return await db.user.findUnique({
+export async function deleteEnvironment(
+  id: Environment["id"],
+  userId: User["id"]
+) {
+  const environment = await db.environment.delete({
     where: {
-      email,
+      id,
+      userId,
+    },
+    include: {
+      variables: true,
     },
   });
+
+  return environment;
 }
 
-export async function getUsersHandler() {
-  return await db.user.findMany({
-    select: {
-      id: true,
-      name: true,
-      email: true,
+export async function updateEnvironment(
+  id: Environment["id"],
+  userId: User["id"],
+  data: CreateEnvironmentRequest
+) {
+  const environment = await db.environment.update({
+    where: {
+      id,
+      userId,
+    },
+    data,
+  });
+
+  return environment;
+}
+
+export const getAllEnvironmentsByUserId = async (userId: User["id"]) => {
+  const environments = await db.environment.findMany({
+    where: {
+      userId,
     },
   });
-}
+
+  return environments;
+};

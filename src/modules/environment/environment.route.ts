@@ -3,12 +3,16 @@ import {
   createEnvironmentHandler,
   deleteEnvironmentHandler,
   getAllEnvironments,
+  updateEnvironmentHandler,
 } from "./environment.controller";
+import { environmentSchemasRef } from "./environment.schema";
+import { verifyToken } from "@middleware/auth";
 import {
   CreateEnvironmentRequest,
-  environmentSchemasRef,
-} from "./environment.schema";
-import { verifyToken } from "@middleware/auth";
+  DeleteEnvironmentRequest,
+  UpdateEnvironmentRequest,
+  UpdateEnvironmentParams,
+} from "./environment.type";
 
 export default function environmentRoutes(
   server: FastifyInstance,
@@ -23,8 +27,10 @@ export default function environmentRoutes(
       schema: {
         body: environmentSchemasRef("createEnvironmentRequest"),
         response: {
-          201: environmentSchemasRef("environmentResponseSchema"),
+          201: environmentSchemasRef("createEnvironmentResponse"),
         },
+        description: "Create a new environment",
+        tags: ["Environment"],
       },
     },
     createEnvironmentHandler
@@ -34,9 +40,35 @@ export default function environmentRoutes(
   server.delete(
     "/:id",
     {
-      preHandler: verifyToken,
+      preHandler: verifyToken<{}, DeleteEnvironmentRequest>,
+      schema: {
+        response: {
+          200: environmentSchemasRef("deleteEnvironmentResponse"),
+        },
+        description: "Delete environment",
+        tags: ["Environment"],
+      },
     },
     deleteEnvironmentHandler
+  );
+
+  server.put(
+    "/:id",
+    {
+      preHandler: verifyToken<
+        UpdateEnvironmentRequest,
+        UpdateEnvironmentParams
+      >,
+      schema: {
+        body: environmentSchemasRef("updateEnvironmentRequest"),
+        response: {
+          200: environmentSchemasRef("updateEnvironmentResponse"),
+        },
+        description: "Update environment",
+        tags: ["Environment"],
+      },
+    },
+    updateEnvironmentHandler
   );
 
   // get environments
@@ -46,8 +78,10 @@ export default function environmentRoutes(
       preHandler: verifyToken,
       schema: {
         response: {
-          200: environmentSchemasRef("environmentListSchema"),
+          200: environmentSchemasRef("environmentListResponse"),
         },
+        description: "Get all environments",
+        tags: ["Environment"],
       },
     },
     getAllEnvironments
