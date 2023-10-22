@@ -1,7 +1,7 @@
 import { buildJsonSchemas } from "fastify-zod";
 import { z } from "zod";
-import { baseResponseSchema } from "../../utils/schemas";
 import { User } from "@prisma/client";
+import { baseResponseSchema } from "@utils/schemas";
 
 const createEnvironmentRequest = z.object({
   name: z.string().min(1).max(255),

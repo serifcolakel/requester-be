@@ -1,12 +1,12 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { createUser, getUserByEmail } from "./user.service";
-import { CreateUserInput, LoginInput } from "./user.schema";
-import { verifyPassword } from "../../utils/hash";
-import server from "../../lib/server";
+import { CreateUserRequest, LoginRequest } from "./user.schema";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import { verifyPassword } from "@utils/hash";
+import server from "@lib/server";
 
 export async function registerUserHandler(
-  request: FastifyRequest<{ Body: CreateUserInput }>,
+  request: FastifyRequest<{ Body: CreateUserRequest }>,
   reply: FastifyReply
 ) {
   const body = request.body;
@@ -33,7 +33,7 @@ export async function registerUserHandler(
 }
 
 export async function loginHandler(
-  request: FastifyRequest<{ Body: LoginInput }>,
+  request: FastifyRequest<{ Body: LoginRequest }>,
   reply: FastifyReply
 ) {
   const body = request.body;
@@ -46,7 +46,7 @@ export async function loginHandler(
     }
 
     const isPasswordValid = verifyPassword(
-      body.password,
+      body.password!,
       user.password,
       user.salt
     );

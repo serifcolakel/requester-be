@@ -1,10 +1,9 @@
 import Fastify from "fastify";
-import fjwt from "@fastify/jwt";
 
-const server = Fastify();
-
-server.register(fjwt, {
-  secret: "supersecret",
+const server = Fastify({
+  logger: {
+    level: "info",
+  },
 });
 
 export default server;

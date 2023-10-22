@@ -8,7 +8,7 @@ import {
   CreateEnvironmentRequest,
   environmentSchemasRef,
 } from "./environment.schema";
-import { verifyToken } from "../../middleware/auth";
+import { verifyToken } from "@middleware/auth";
 
 export default function environmentRoutes(
   server: FastifyInstance,

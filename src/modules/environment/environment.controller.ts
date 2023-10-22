@@ -1,12 +1,12 @@
 import { FastifyReply, FastifyRequest, RouteHandlerMethod } from "fastify";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import db from "../../lib/db";
 import { User } from "@prisma/client";
 import { createEnvironment } from "./environment.service";
 import {
   CreateEnvironmentRequest,
   GetAllEnvironmentsResponse,
 } from "./environment.schema";
+import db from "@lib/db";
 
 export async function createEnvironmentHandler(
   request: FastifyRequest<{ Body: CreateEnvironmentRequest }>,

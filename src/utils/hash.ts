@@ -7,6 +7,7 @@ export function hashPassword(password: string) {
     .toString("hex");
   return { salt, hash };
 }
+
 export function verifyPassword(password: string, hash: string, salt: string) {
   const hashVerify = crypto
     .pbkdf2Sync(password, salt, 100000, 512, "sha512")

@@ -1,8 +1,8 @@
-import db from "../../lib/db";
-import { hashPassword } from "../../utils/hash";
-import { CreateUserInput } from "./user.schema";
+import { hashPassword } from "@utils/hash";
+import { CreateUserRequest } from "./user.schema";
+import db from "@lib/db";
 
-export async function createUser(data: CreateUserInput) {
+export async function createUser(data: CreateUserRequest) {
   const { password, ...rest } = data;
 
   const { salt, hash } = hashPassword(password);
