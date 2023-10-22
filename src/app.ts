@@ -10,6 +10,8 @@ import server from "@lib/server";
 import { environmentSchemas } from "@modules/environment/environment.schema";
 import { version } from "../package.json";
 import fastifySwaggerUi from "@fastify/swagger-ui";
+import variableRoutes from "@modules/variable/variable.route";
+import { variableSchemas } from "@modules/variable/variable.schema";
 
 server.get("/api/status", async () => {
   return {
@@ -36,6 +38,10 @@ async function start() {
   }
 
   for (const schema of environmentSchemas) {
+    server.addSchema(schema);
+  }
+
+  for (const schema of variableSchemas) {
     server.addSchema(schema);
   }
 
@@ -74,6 +80,7 @@ async function start() {
 
   server.register(userRoutes, { prefix: "/api/users" });
   server.register(environmentRoutes, { prefix: "/api/environments" });
+  server.register(variableRoutes, { prefix: "/api/variables" });
 
   try {
     await server.listen({
