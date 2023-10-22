@@ -1,7 +1,10 @@
 import { FastifyInstance, RouteShorthandOptions } from "fastify";
-import { loginHandler, registerUserHandler } from "./user.controller";
+import {
+  getUsersHandler,
+  loginHandler,
+  registerUserHandler,
+} from "./user.controller";
 import { userSchemasRef } from "./user.schema";
-import { getUsersHandler } from "./user.service";
 import { verifyToken } from "@middleware/auth";
 
 export default function userRoutes(
@@ -18,6 +21,7 @@ export default function userRoutes(
         response: {
           201: userSchemasRef("createUserResponse"),
         },
+        tags: ["User"],
       },
     },
     registerUserHandler
@@ -32,6 +36,7 @@ export default function userRoutes(
         response: {
           200: userSchemasRef("loginResponse"),
         },
+        tags: ["User"],
       },
     },
     loginHandler
@@ -42,6 +47,12 @@ export default function userRoutes(
     "/get-all",
     {
       preHandler: verifyToken,
+      schema: {
+        response: {
+          200: userSchemasRef("userListResponse"),
+        },
+        tags: ["User"],
+      },
     },
     getUsersHandler
   );

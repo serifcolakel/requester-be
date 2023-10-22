@@ -1,22 +1,29 @@
 import { UserModel } from "@models";
+import { baseResponseSchema } from "@utils/schemas";
 import { buildJsonSchemas } from "fastify-zod";
 import { z } from "zod";
 
-const createUserRequest = UserModel.pick({
+export const createUserRequest = UserModel.pick({
   email: true,
   name: true,
   password: true,
 });
-const createUserResponse = UserModel.pick({ name: true, email: true });
-export type CreateUserRequest = z.infer<typeof createUserRequest>;
-export type CreateUserResponse = z.infer<typeof createUserResponse>;
 
-const loginRequest = UserModel.pick({ email: true, password: true });
-const loginResponse = z.object({
-  accessToken: z.string(),
-});
-export type LoginRequest = z.infer<typeof loginRequest>;
-export type LoginResponse = z.infer<typeof loginResponse>;
+export const createUserResponse = baseResponseSchema(
+  UserModel.pick({ name: true, email: true })
+);
+
+export const loginRequest = UserModel.pick({ email: true, password: true });
+
+export const loginResponse = baseResponseSchema(
+  z.object({
+    accessToken: z.string(),
+  })
+);
+
+export const userListResponse = baseResponseSchema(
+  z.array(UserModel.pick({ id: true, name: true, email: true }))
+);
 
 export const { schemas: userSchemas, $ref: userSchemasRef } = buildJsonSchemas(
   {
@@ -24,8 +31,9 @@ export const { schemas: userSchemas, $ref: userSchemasRef } = buildJsonSchemas(
     createUserResponse,
     loginRequest,
     loginResponse,
+    userListResponse,
   },
   {
-    $id: "user",
+    $id: "UserSchemas",
   }
 );

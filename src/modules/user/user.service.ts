@@ -1,6 +1,6 @@
 import { hashPassword } from "@utils/hash";
-import { CreateUserRequest } from "./user.schema";
 import db from "@lib/db";
+import { CreateUserRequest } from "./user.type";
 
 export async function createUser(data: CreateUserRequest) {
   const { password, ...rest } = data;
@@ -26,7 +26,7 @@ export async function getUserByEmail(email: string) {
   });
 }
 
-export async function getUsersHandler() {
+export async function getUsers() {
   return await db.user.findMany({
     select: {
       id: true,
