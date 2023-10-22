@@ -1,7 +1,9 @@
+import { FastifyJWT } from "@fastify/jwt";
+import { getError } from "@utils/error";
 import { FastifyReply, FastifyRequest } from "fastify";
 
-export const verifyToken = async <T>(
-  request: FastifyRequest<{ Body: T }>,
+export const verifyToken = async <TBody extends FastifyJWT, TParams = {}>(
+  request: FastifyRequest<{ Body: TBody; Params: TParams }>,
   reply: FastifyReply,
   next: () => void
 ) => {
@@ -9,6 +11,8 @@ export const verifyToken = async <T>(
     await request.jwtVerify();
     next();
   } catch (error) {
-    return reply.status(401).send(error);
+    return reply
+      .status(401)
+      .send(getError(new Error("Unauthorized. Please login to continue.")));
   }
 };
