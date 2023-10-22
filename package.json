@@ -11,7 +11,12 @@
     "type": "git",
     "url": "git+https://github.com/serifcolakel/requester-be.git"
   },
-  "keywords": [],
+  "keywords": [
+    "fastify",
+    "typescript",
+    "prisma",
+    "zod"
+  ],
   "author": "Serif Çolakel",
   "license": "ISC",
   "bugs": {
