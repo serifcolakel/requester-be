@@ -1,3 +1,4 @@
+import { JWT } from "@fastify/jwt";
 import Fastify from "fastify";
 
 const server = Fastify({
@@ -5,5 +6,11 @@ const server = Fastify({
     level: "info",
   },
 });
+
+declare module "fastify" {
+  interface FastifyRequest {
+    jwt: JWT;
+  }
+}
 
 export default server;
