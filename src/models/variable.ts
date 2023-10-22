@@ -2,12 +2,12 @@ import * as z from "zod"
 import { CompleteEnvironment, RelatedEnvironmentModel } from "./index"
 
 export const VariableModel = z.object({
-  id: z.number().int(),
+  id: z.string(),
   name: z.string(),
   value: z.string(),
   createdAt: z.date(),
   updatedAt: z.date(),
-  environmentId: z.number().int(),
+  environmentId: z.string(),
 })
 
 export interface CompleteVariable extends z.infer<typeof VariableModel> {

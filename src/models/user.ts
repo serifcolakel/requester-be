@@ -2,7 +2,7 @@ import * as z from "zod"
 import { CompleteEnvironment, RelatedEnvironmentModel } from "./index"
 
 export const UserModel = z.object({
-  id: z.number().int(),
+  id: z.string(),
   email: z.string(),
   name: z.string().nullish(),
   password: z.string(),
