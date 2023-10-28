@@ -12,11 +12,27 @@ import { version } from "../package.json";
 import fastifySwaggerUi from "@fastify/swagger-ui";
 import variableRoutes from "@modules/variable/variable.route";
 import { variableSchemas } from "@modules/variable/variable.schema";
+import authRoutes from "@modules/auth/auth.route";
+import { authSchemas } from "@modules/auth/auth.schema";
+import { swaggerOptions } from "@configs/swaggerConfig";
 
 server.get("/api/status", async () => {
   return {
-    status: "ok",
-    message: "Hello World",
+    data: {
+      version,
+    },
+    success: true,
+    message: "Variables fetched successfully.",
+  };
+});
+
+server.get("/api/todos", async () => {
+  const res = await fetch("https://jsonplaceholder.typicode.com/todos");
+  const data = await res.json();
+  return {
+    data,
+    success: true,
+    message: "Todos fetched successfully.",
   };
 });
 
@@ -45,33 +61,11 @@ async function start() {
     server.addSchema(schema);
   }
 
-  server.register(
-    swagger,
-    withRefResolver({
-      swagger: {
-        info: {
-          title: "Requester API",
-          description:
-            "Building a blazing fast REST API with Node.js, PostgreSQL, Fastify and Swagger",
-          version,
-        },
-        host: "localhost:3000",
-        schemes: ["http"],
-        consumes: ["application/json"],
-        produces: ["application/json"],
-        securityDefinitions: {
-          Bearer: {
-            type: "apiKey",
-            name: "Authorization",
-            in: "header",
-            description:
-              'JWT Authorization header using the Bearer scheme. Example: "Bearer {token}"',
-          },
-        },
-        security: [{ Bearer: [] }],
-      },
-    })
-  );
+  for (const schema of authSchemas) {
+    server.addSchema(schema);
+  }
+
+  server.register(swagger, withRefResolver(swaggerOptions));
 
   server.register(fastifySwaggerUi, {
     routePrefix: "/doc",
@@ -79,13 +73,14 @@ async function start() {
   });
 
   server.register(userRoutes, { prefix: "/api/users" });
+  server.register(authRoutes, { prefix: "/api/auth" });
   server.register(environmentRoutes, { prefix: "/api/environments" });
   server.register(variableRoutes, { prefix: "/api/variables" });
 
   try {
     await server.listen({
-      port: 3000,
-      host: "0.0.0.0",
+      port: Number(process.env.PORT || 3000),
+      host: process.env.HOST || "",
     });
   } catch (err) {
     console.error(err);
