@@ -34,6 +34,7 @@ model User {
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
   environments Environment[]
+  Collection   Collection[]
 }
 
 model Environment {
@@ -54,4 +55,75 @@ model Variable {
   updatedAt     DateTime    @updatedAt
   environmentId String
   environment   Environment @relation(fields: [environmentId], references: [id])
+}
+
+enum Method {
+  GET
+  POST
+  PUT
+  DELETE
+}
+
+model Collection {
+  id        String    @id @default(uuid())
+  name      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+  requests  Request[]
+}
+
+model Request {
+  id           String       @id @default(uuid())
+  name         String
+  method       Method
+  url          String
+  body         String
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  collectionId String
+  collection   Collection   @relation(fields: [collectionId], references: [id])
+  headers      Header[]
+  query        Query[]
+  preRequest   PreRequest[]
+  response     Response[]
+}
+
+model Header {
+  id        String   @id @default(uuid())
+  key       String
+  value     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  requestId String
+  request   Request  @relation(fields: [requestId], references: [id])
+}
+
+model Query {
+  id        String   @id @default(uuid())
+  key       String
+  value     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  requestId String
+  request   Request  @relation(fields: [requestId], references: [id])
+}
+
+model PreRequest {
+  id        String   @id @default(uuid())
+  script    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  requestId String
+  request   Request  @relation(fields: [requestId], references: [id])
+}
+
+model Response {
+  id        String   @id @default(uuid())
+  body      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  requestId String
+  request   Request  @relation(fields: [requestId], references: [id])
 }
