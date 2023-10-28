@@ -1,5 +1,5 @@
 import * as z from "zod"
-import { CompleteEnvironment, RelatedEnvironmentModel } from "./index"
+import { CompleteEnvironment, RelatedEnvironmentModel, CompleteCollection, RelatedCollectionModel } from "./index"
 
 export const UserModel = z.object({
   id: z.string(),
@@ -13,6 +13,7 @@ export const UserModel = z.object({
 
 export interface CompleteUser extends z.infer<typeof UserModel> {
   environments: CompleteEnvironment[]
+  Collection: CompleteCollection[]
 }
 
 /**
@@ -22,4 +23,5 @@ export interface CompleteUser extends z.infer<typeof UserModel> {
  */
 export const RelatedUserModel: z.ZodSchema<CompleteUser> = z.lazy(() => UserModel.extend({
   environments: RelatedEnvironmentModel.array(),
+  Collection: RelatedCollectionModel.array(),
 }))
