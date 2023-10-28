@@ -1,5 +1,5 @@
-import * as z from "zod"
-import { CompleteRequest, RelatedRequestModel } from "./index"
+import * as z from "zod";
+import { CompleteRequest, RelatedRequestModel } from "./index";
 
 export const ResponseModel = z.object({
   id: z.string(),
@@ -7,10 +7,10 @@ export const ResponseModel = z.object({
   createdAt: z.date(),
   updatedAt: z.date(),
   requestId: z.string(),
-})
+});
 
 export interface CompleteResponse extends z.infer<typeof ResponseModel> {
-  request: CompleteRequest
+  request: CompleteRequest;
 }
 
 /**
@@ -18,6 +18,8 @@ export interface CompleteResponse extends z.infer<typeof ResponseModel> {
  *
  * NOTE: Lazy required in case of potential circular dependencies within schema
  */
-export const RelatedResponseModel: z.ZodSchema<CompleteResponse> = z.lazy(() => ResponseModel.extend({
-  request: RelatedRequestModel,
-}))
+export const RelatedResponseModel: z.ZodSchema<CompleteResponse> = z.lazy(() =>
+  ResponseModel.extend({
+    request: RelatedRequestModel,
+  })
+);

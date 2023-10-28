@@ -1,5 +1,5 @@
-import * as z from "zod"
-import { CompleteRequest, RelatedRequestModel } from "./index"
+import * as z from "zod";
+import { CompleteRequest, RelatedRequestModel } from "./index";
 
 export const PreRequestModel = z.object({
   id: z.string(),
@@ -7,10 +7,10 @@ export const PreRequestModel = z.object({
   createdAt: z.date(),
   updatedAt: z.date(),
   requestId: z.string(),
-})
+});
 
 export interface CompletePreRequest extends z.infer<typeof PreRequestModel> {
-  request: CompleteRequest
+  request: CompleteRequest;
 }
 
 /**
@@ -18,6 +18,9 @@ export interface CompletePreRequest extends z.infer<typeof PreRequestModel> {
  *
  * NOTE: Lazy required in case of potential circular dependencies within schema
  */
-export const RelatedPreRequestModel: z.ZodSchema<CompletePreRequest> = z.lazy(() => PreRequestModel.extend({
-  request: RelatedRequestModel,
-}))
+export const RelatedPreRequestModel: z.ZodSchema<CompletePreRequest> = z.lazy(
+  () =>
+    PreRequestModel.extend({
+      request: RelatedRequestModel,
+    })
+);

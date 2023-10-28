@@ -1,5 +1,5 @@
-import * as z from "zod"
-import { CompleteRequest, RelatedRequestModel } from "./index"
+import * as z from "zod";
+import { CompleteRequest, RelatedRequestModel } from "./index";
 
 export const HeaderModel = z.object({
   id: z.string(),
@@ -8,10 +8,10 @@ export const HeaderModel = z.object({
   createdAt: z.date(),
   updatedAt: z.date(),
   requestId: z.string(),
-})
+});
 
 export interface CompleteHeader extends z.infer<typeof HeaderModel> {
-  request: CompleteRequest
+  request: CompleteRequest;
 }
 
 /**
@@ -19,6 +19,8 @@ export interface CompleteHeader extends z.infer<typeof HeaderModel> {
  *
  * NOTE: Lazy required in case of potential circular dependencies within schema
  */
-export const RelatedHeaderModel: z.ZodSchema<CompleteHeader> = z.lazy(() => HeaderModel.extend({
-  request: RelatedRequestModel,
-}))
+export const RelatedHeaderModel: z.ZodSchema<CompleteHeader> = z.lazy(() =>
+  HeaderModel.extend({
+    request: RelatedRequestModel,
+  })
+);

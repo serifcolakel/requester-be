@@ -1,5 +1,10 @@
-import * as z from "zod"
-import { CompleteUser, RelatedUserModel, CompleteVariable, RelatedVariableModel } from "./index"
+import * as z from "zod";
+import {
+  CompleteUser,
+  RelatedUserModel,
+  CompleteVariable,
+  RelatedVariableModel,
+} from "./index";
 
 export const EnvironmentModel = z.object({
   id: z.string(),
@@ -7,11 +12,11 @@ export const EnvironmentModel = z.object({
   createdAt: z.date(),
   updatedAt: z.date(),
   userId: z.string(),
-})
+});
 
 export interface CompleteEnvironment extends z.infer<typeof EnvironmentModel> {
-  user: CompleteUser
-  variables: CompleteVariable[]
+  user: CompleteUser;
+  variables: CompleteVariable[];
 }
 
 /**
@@ -19,7 +24,10 @@ export interface CompleteEnvironment extends z.infer<typeof EnvironmentModel> {
  *
  * NOTE: Lazy required in case of potential circular dependencies within schema
  */
-export const RelatedEnvironmentModel: z.ZodSchema<CompleteEnvironment> = z.lazy(() => EnvironmentModel.extend({
-  user: RelatedUserModel,
-  variables: RelatedVariableModel.array(),
-}))
+export const RelatedEnvironmentModel: z.ZodSchema<CompleteEnvironment> = z.lazy(
+  () =>
+    EnvironmentModel.extend({
+      user: RelatedUserModel,
+      variables: RelatedVariableModel.array(),
+    })
+);

@@ -1,6 +1,17 @@
-import * as z from "zod"
-import { Method } from "@prisma/client"
-import { CompleteCollection, RelatedCollectionModel, CompleteHeader, RelatedHeaderModel, CompleteQuery, RelatedQueryModel, CompletePreRequest, RelatedPreRequestModel, CompleteResponse, RelatedResponseModel } from "./index"
+import * as z from "zod";
+import { Method } from "@prisma/client";
+import {
+  CompleteCollection,
+  RelatedCollectionModel,
+  CompleteHeader,
+  RelatedHeaderModel,
+  CompleteQuery,
+  RelatedQueryModel,
+  CompletePreRequest,
+  RelatedPreRequestModel,
+  CompleteResponse,
+  RelatedResponseModel,
+} from "./index";
 
 export const RequestModel = z.object({
   id: z.string(),
@@ -11,14 +22,14 @@ export const RequestModel = z.object({
   createdAt: z.date(),
   updatedAt: z.date(),
   collectionId: z.string(),
-})
+});
 
 export interface CompleteRequest extends z.infer<typeof RequestModel> {
-  collection: CompleteCollection
-  headers: CompleteHeader[]
-  query: CompleteQuery[]
-  preRequest: CompletePreRequest[]
-  response: CompleteResponse[]
+  collection: CompleteCollection;
+  headers: CompleteHeader[];
+  query: CompleteQuery[];
+  preRequest: CompletePreRequest[];
+  response: CompleteResponse[];
 }
 
 /**
@@ -26,10 +37,12 @@ export interface CompleteRequest extends z.infer<typeof RequestModel> {
  *
  * NOTE: Lazy required in case of potential circular dependencies within schema
  */
-export const RelatedRequestModel: z.ZodSchema<CompleteRequest> = z.lazy(() => RequestModel.extend({
-  collection: RelatedCollectionModel,
-  headers: RelatedHeaderModel.array(),
-  query: RelatedQueryModel.array(),
-  preRequest: RelatedPreRequestModel.array(),
-  response: RelatedResponseModel.array(),
-}))
+export const RelatedRequestModel: z.ZodSchema<CompleteRequest> = z.lazy(() =>
+  RequestModel.extend({
+    collection: RelatedCollectionModel,
+    headers: RelatedHeaderModel.array(),
+    query: RelatedQueryModel.array(),
+    preRequest: RelatedPreRequestModel.array(),
+    response: RelatedResponseModel.array(),
+  })
+);
