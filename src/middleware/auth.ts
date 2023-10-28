@@ -4,12 +4,10 @@ import { FastifyReply, FastifyRequest } from "fastify";
 
 export const verifyToken = async <TBody extends FastifyJWT, TParams = {}>(
   request: FastifyRequest<{ Body: TBody; Params: TParams }>,
-  reply: FastifyReply,
-  next: () => void
+  reply: FastifyReply
 ) => {
   try {
     await request.jwtVerify();
-    next();
   } catch (error) {
     return reply
       .status(401)
