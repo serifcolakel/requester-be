@@ -14,13 +14,16 @@ export async function deleteEnvironment(
   id: Environment["id"],
   userId: User["id"]
 ) {
+  await db.variable.deleteMany({
+    where: {
+      environmentId: id,
+    },
+  });
+
   const environment = await db.environment.delete({
     where: {
       id,
       userId,
-    },
-    include: {
-      variables: true,
     },
   });
 
