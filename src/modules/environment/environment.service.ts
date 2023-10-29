@@ -58,6 +58,9 @@ export const getAllEnvironmentsByUserId = async (userId: User["id"]) => {
     where: {
       userId,
     },
+    orderBy: {
+      updatedAt: "desc",
+    },
   });
 
   return environments;

@@ -41,6 +41,9 @@ export const getAllVariablesByEnvironmentId = async (
     where: {
       environmentId,
     },
+    orderBy: {
+      updatedAt: "desc",
+    },
   });
 
   return variables;
