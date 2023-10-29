@@ -5,6 +5,7 @@ import {
   deleteEnvironmentResponse,
   environmentListResponse,
   updateEnvironmentRequest,
+  updateEnvironmentResponse,
 } from "./environment.schema";
 import { User } from "@prisma/client";
 import { CompleteEnvironment } from "@models";
@@ -27,6 +28,10 @@ export type UpdateEnvironmentRequest = z.infer<
 > & {
   userId: User["id"];
 };
+
+export type UpdateEnvironmentResponse = z.infer<
+  typeof updateEnvironmentResponse
+>;
 
 export type DeleteEnvironmentResponse = z.infer<
   typeof deleteEnvironmentResponse

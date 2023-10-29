@@ -12,7 +12,6 @@ export const createEnvironmentResponse = baseResponseSchema(
   EnvironmentModel.pick({
     id: true,
     name: true,
-    userId: true,
   })
 );
 
@@ -20,7 +19,6 @@ export const deleteEnvironmentResponse = baseResponseSchema(
   EnvironmentModel.pick({
     id: true,
     name: true,
-    userId: true,
   })
 );
 
@@ -33,7 +31,6 @@ export const updateEnvironmentResponse = baseResponseSchema(
   EnvironmentModel.pick({
     id: true,
     name: true,
-    userId: true,
   })
 );
 

@@ -14,6 +14,7 @@ import {
   EnvironmentListResponse,
   UpdateEnvironmentParams,
   UpdateEnvironmentRequest,
+  UpdateEnvironmentResponse,
 } from "./environment.type";
 import { getError } from "@utils/error";
 
@@ -34,7 +35,6 @@ export async function createEnvironmentHandler(
       data: {
         id: environment.id,
         name: environment.name,
-        userId: environment.userId,
       },
       message: "Environment created successfully.",
       success: true,
@@ -58,7 +58,6 @@ export const deleteEnvironmentHandler = async (
       data: {
         id: environment.id,
         name: environment.name,
-        userId: environment.userId,
       },
       message: "Environment deleted successfully.",
       success: true,
@@ -81,11 +80,10 @@ export const updateEnvironmentHandler = async (
     const user: User = await request.jwtVerify();
     const environment = await updateEnvironment(id, user.id, request.body);
 
-    const response: DeleteEnvironmentResponse = {
+    const response: UpdateEnvironmentResponse = {
       data: {
         id: environment.id,
         name: environment.name,
-        userId: environment.userId,
       },
       message: "Environment updated successfully.",
       success: true,
