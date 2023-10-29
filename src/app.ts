@@ -15,6 +15,7 @@ import { variableSchemas } from "@modules/variable/variable.schema";
 import authRoutes from "@modules/auth/auth.route";
 import { authSchemas } from "@modules/auth/auth.schema";
 import { swaggerOptions } from "@configs/swaggerConfig";
+import cors from "@fastify/cors";
 
 server.get("/api/status", async () => {
   return {
@@ -67,6 +68,12 @@ async function start() {
 
   server.register(swagger, withRefResolver(swaggerOptions));
 
+  server.register(cors, {
+    origin: "*",
+    methods: ["GET", "PUT", "POST", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  });
+
   server.register(fastifySwaggerUi, {
     routePrefix: "/doc",
     staticCSP: true,
@@ -85,9 +92,6 @@ async function start() {
   } catch (err) {
     console.error(err);
     server.log.error(err);
-    if (process.env.TS_NODE_DEV !== "true") {
-      process.exit(1);
-    }
   }
 }
 

@@ -1,5 +1,8 @@
 import db from "@lib/db";
-import { CreateEnvironmentRequest } from "./environment.type";
+import {
+  CreateEnvironmentRequest,
+  UpdateEnvironmentRequest,
+} from "./environment.type";
 import { Environment, User } from "@prisma/client";
 
 export async function createEnvironment(data: CreateEnvironmentRequest) {
@@ -14,17 +17,21 @@ export async function deleteEnvironment(
   id: Environment["id"],
   userId: User["id"]
 ) {
-  await db.variable.deleteMany({
-    where: {
-      environmentId: id,
-    },
-  });
+  const environment = await db.$transaction(async (prisma) => {
+    await prisma.variable.deleteMany({
+      where: {
+        environmentId: id,
+      },
+    });
 
-  const environment = await db.environment.delete({
-    where: {
-      id,
-      userId,
-    },
+    const deletedEnvironment = await prisma.environment.delete({
+      where: {
+        id,
+        userId,
+      },
+    });
+
+    return deletedEnvironment;
   });
 
   return environment;
@@ -33,7 +40,7 @@ export async function deleteEnvironment(
 export async function updateEnvironment(
   id: Environment["id"],
   userId: User["id"],
-  data: CreateEnvironmentRequest
+  data: UpdateEnvironmentRequest
 ) {
   const environment = await db.environment.update({
     where: {
