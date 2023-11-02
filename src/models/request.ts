@@ -5,10 +5,8 @@ import {
   RelatedCollectionModel,
   CompleteHeader,
   RelatedHeaderModel,
-  CompleteQuery,
-  RelatedQueryModel,
-  CompletePreRequest,
-  RelatedPreRequestModel,
+  CompleteParams,
+  RelatedParamsModel,
   CompleteResponse,
   RelatedResponseModel,
 } from "./index";
@@ -27,8 +25,7 @@ export const RequestModel = z.object({
 export interface CompleteRequest extends z.infer<typeof RequestModel> {
   collection: CompleteCollection;
   headers: CompleteHeader[];
-  query: CompleteQuery[];
-  preRequest: CompletePreRequest[];
+  params: CompleteParams[];
   response: CompleteResponse[];
 }
 
@@ -41,8 +38,7 @@ export const RelatedRequestModel: z.ZodSchema<CompleteRequest> = z.lazy(() =>
   RequestModel.extend({
     collection: RelatedCollectionModel,
     headers: RelatedHeaderModel.array(),
-    query: RelatedQueryModel.array(),
-    preRequest: RelatedPreRequestModel.array(),
+    params: RelatedParamsModel.array(),
     response: RelatedResponseModel.array(),
   })
 );

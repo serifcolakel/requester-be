@@ -1,7 +1,7 @@
 import * as z from "zod";
 import { CompleteRequest, RelatedRequestModel } from "./index";
 
-export const QueryModel = z.object({
+export const ParamsModel = z.object({
   id: z.string(),
   key: z.string(),
   value: z.string(),
@@ -10,17 +10,17 @@ export const QueryModel = z.object({
   requestId: z.string(),
 });
 
-export interface CompleteQuery extends z.infer<typeof QueryModel> {
+export interface CompleteParams extends z.infer<typeof ParamsModel> {
   request: CompleteRequest;
 }
 
 /**
- * RelatedQueryModel contains all relations on your model in addition to the scalars
+ * RelatedParamsModel contains all relations on your model in addition to the scalars
  *
  * NOTE: Lazy required in case of potential circular dependencies within schema
  */
-export const RelatedQueryModel: z.ZodSchema<CompleteQuery> = z.lazy(() =>
-  QueryModel.extend({
+export const RelatedParamsModel: z.ZodSchema<CompleteParams> = z.lazy(() =>
+  ParamsModel.extend({
     request: RelatedRequestModel,
   })
 );
