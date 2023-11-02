@@ -72,22 +72,28 @@ model Collection {
   userId    String
   user      User      @relation(fields: [userId], references: [id])
   requests  Request[]
+
+  // Self-referencing relationship for folders
+  parentId       String?
+  parent         Collection?  @relation("SubCollections", fields: [parentId], references: [id])
+  subCollections Collection[] @relation("SubCollections")
 }
 
 model Request {
-  id           String       @id @default(uuid())
+  id           String     @id @default(uuid())
   name         String
   method       Method
   url          String
   body         String
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
   collectionId String
-  collection   Collection   @relation(fields: [collectionId], references: [id])
+  collection   Collection @relation(fields: [collectionId], references: [id])
   headers      Header[]
-  query        Query[]
-  preRequest   PreRequest[]
+  params       Params[]
   response     Response[]
+
+  @@map("requests")
 }
 
 model Header {
@@ -100,19 +106,10 @@ model Header {
   request   Request  @relation(fields: [requestId], references: [id])
 }
 
-model Query {
+model Params {
   id        String   @id @default(uuid())
   key       String
   value     String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  requestId String
-  request   Request  @relation(fields: [requestId], references: [id])
-}
-
-model PreRequest {
-  id        String   @id @default(uuid())
-  script    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   requestId String
