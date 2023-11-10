@@ -23,6 +23,8 @@ import requestRoutes from "@modules/request/request.route";
 import { getError } from "@utils/error";
 import { headerSchemas } from "@modules/header/header.schema";
 import headerRoutes from "@modules/header/header.route";
+import { ParamsSchemas } from "@modules/parameter/parameter.schema";
+import paramsRoutes from "@modules/parameter/parameter.route";
 
 server.get("/api/status", async () => {
   return {
@@ -85,6 +87,10 @@ async function start() {
     server.addSchema(schema);
   }
 
+  for (const schema of ParamsSchemas) {
+    server.addSchema(schema);
+  }
+
   server.register(swagger, withRefResolver(swaggerOptions));
 
   server.register(cors, {
@@ -109,6 +115,7 @@ async function start() {
   server.register(collectionRoutes, { prefix: "/api/collections" });
   server.register(requestRoutes, { prefix: "/api/requests" });
   server.register(headerRoutes, { prefix: "/api/headers" });
+  server.register(paramsRoutes, { prefix: "/api/params" });
 
   try {
     await server.listen({
