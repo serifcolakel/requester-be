@@ -14,19 +14,20 @@ export const getError = (error: unknown): TError => {
   }
 
   let message = "";
+  let code = "Unknown error";
   if (error instanceof PrismaClientKnownRequestError) {
     message = getPrismaErrorMessage(error);
+    code = error.code;
   } else if (error instanceof Error) {
+    console.log(error);
     message = error.message;
+    code = error.hasOwnProperty("code") ? (error as any).code : error.stack;
   }
 
   return {
     message,
     data: {
-      code:
-        error instanceof PrismaClientKnownRequestError
-          ? error.code
-          : "Unknown error",
+      code,
     },
     success: false,
   };
