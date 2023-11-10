@@ -21,6 +21,8 @@ import collectionRoutes from "@modules/collection/collection.route";
 import { requestSchemas } from "@modules/request/request.schema";
 import requestRoutes from "@modules/request/request.route";
 import { getError } from "@utils/error";
+import { headerSchemas } from "@modules/header/header.schema";
+import headerRoutes from "@modules/header/header.route";
 
 server.get("/api/status", async () => {
   return {
@@ -79,6 +81,10 @@ async function start() {
     server.addSchema(schema);
   }
 
+  for (const schema of headerSchemas) {
+    server.addSchema(schema);
+  }
+
   server.register(swagger, withRefResolver(swaggerOptions));
 
   server.register(cors, {
@@ -102,6 +108,7 @@ async function start() {
   server.register(variableRoutes, { prefix: "/api/variables" });
   server.register(collectionRoutes, { prefix: "/api/collections" });
   server.register(requestRoutes, { prefix: "/api/requests" });
+  server.register(headerRoutes, { prefix: "/api/headers" });
 
   try {
     await server.listen({
