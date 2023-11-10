@@ -46,6 +46,9 @@ export const getAllHeadersByRequestId = async ({
     where: {
       requestId,
     },
+    orderBy: {
+      updatedAt: "desc",
+    },
   });
 
   return headers;

@@ -102,6 +102,9 @@ export const getAllRequestsByCollectionId = async (
     where: {
       collectionId,
     },
+    orderBy: {
+      updatedAt: "desc",
+    },
   });
 
   return requests;

@@ -46,6 +46,9 @@ export const getAllParameterByRequestId = async ({
     where: {
       requestId,
     },
+    orderBy: {
+      updatedAt: "desc",
+    },
   });
 
   return params;
