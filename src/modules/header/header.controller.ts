@@ -83,7 +83,7 @@ export const updateHeaderHandler = async (
 
     const response: UpdateHeaderResponse = {
       data: {
-        id: request.id,
+        id: header.id,
         key: header.key,
         requestId: header.requestId,
         value: header.value,
