@@ -18,6 +18,9 @@ import { swaggerOptions } from "@configs/swaggerConfig";
 import cors from "@fastify/cors";
 import { collectionSchemas } from "@modules/collection/collection.schema";
 import collectionRoutes from "@modules/collection/collection.route";
+import { requestSchemas } from "@modules/request/request.schema";
+import requestRoutes from "@modules/request/request.route";
+import { getError } from "@utils/error";
 
 server.get("/api/status", async () => {
   return {
@@ -72,6 +75,10 @@ async function start() {
     server.addSchema(schema);
   }
 
+  for (const schema of requestSchemas) {
+    server.addSchema(schema);
+  }
+
   server.register(swagger, withRefResolver(swaggerOptions));
 
   server.register(cors, {
@@ -85,11 +92,16 @@ async function start() {
     staticCSP: true,
   });
 
+  server.setErrorHandler(function (error, request, reply) {
+    reply.status(500).send(getError(error));
+  });
+
   server.register(userRoutes, { prefix: "/api/users" });
   server.register(authRoutes, { prefix: "/api/auth" });
   server.register(environmentRoutes, { prefix: "/api/environments" });
   server.register(variableRoutes, { prefix: "/api/variables" });
   server.register(collectionRoutes, { prefix: "/api/collections" });
+  server.register(requestRoutes, { prefix: "/api/requests" });
 
   try {
     await server.listen({
