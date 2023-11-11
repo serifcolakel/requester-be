@@ -1,7 +1,7 @@
 import { buildJsonSchemas } from "fastify-zod";
 import { z } from "zod";
 import { baseResponseSchema } from "@utils/schemas";
-import { CollectionModel } from "@models";
+import { CollectionModel, RequestModel } from "@models";
 
 export const createCollectionRequest = CollectionModel.pick({
   name: true,
@@ -37,6 +37,14 @@ export const collectionListResponse = baseResponseSchema(
     CollectionModel.pick({
       id: true,
       name: true,
+    }).extend({
+      requests: z.array(
+        RequestModel.pick({
+          id: true,
+          name: true,
+          method: true,
+        })
+      ),
     })
   )
 );

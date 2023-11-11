@@ -106,6 +106,11 @@ export const getAllCollections = async (
       data: collections.map((e) => ({
         id: e.id,
         name: e.name,
+        requests: e.requests.map((request) => ({
+          id: request.id,
+          name: request.name,
+          method: request.method,
+        })),
       })),
       message: "Collections fetched successfully.",
       success: true,

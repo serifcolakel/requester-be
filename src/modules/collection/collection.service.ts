@@ -98,10 +98,15 @@ export const getAllCollectionByUserId = async (userId: User["id"]) => {
     where: {
       userId,
     },
+    include: {
+      requests: true,
+    },
     orderBy: {
       updatedAt: "desc",
     },
   });
+
+  console.log(collections);
 
   return collections;
 };
