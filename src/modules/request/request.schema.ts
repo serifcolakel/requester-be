@@ -1,7 +1,7 @@
 import { buildJsonSchemas } from "fastify-zod";
 import { z } from "zod";
 import { baseResponseSchema } from "@utils/schemas";
-import { RequestModel } from "@models";
+import { HeaderModel, ParamsModel, RequestModel, ResponseModel } from "@models";
 
 export const createRequestBody = RequestModel.pick({
   name: true,
@@ -64,6 +64,29 @@ export const requestListResponse = baseResponseSchema(
       method: true,
       collectionId: true,
       body: true,
+    }).extend({
+      params: z.array(
+        ParamsModel.pick({
+          key: true,
+          value: true,
+          id: true,
+        })
+      ),
+
+      header: z.array(
+        HeaderModel.pick({
+          key: true,
+          value: true,
+          id: true,
+        })
+      ),
+      response: z.array(
+        ResponseModel.pick({
+          key: true,
+          value: true,
+          id: true,
+        })
+      ),
     })
   )
 );

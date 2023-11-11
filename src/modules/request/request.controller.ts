@@ -118,6 +118,21 @@ export const getAllRequestsHandler = async (
         method: e.method,
         url: e.url,
         body: e.body,
+        header: e.headers.map((h) => ({
+          id: h.id,
+          key: h.key,
+          value: h.value,
+        })),
+        params: e.params.map((p) => ({
+          id: p.id,
+          key: p.key,
+          value: p.value,
+        })),
+
+        response: e.response.map((r) => ({
+          id: r.id,
+          body: r.body,
+        })),
       })),
       message: "Requests fetched successfully.",
       success: true,
