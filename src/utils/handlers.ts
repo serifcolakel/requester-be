@@ -36,7 +36,7 @@ export const getPrismaErrorMessage = (
   const key = getKeyByCode(error.code);
   const replacer = getErrorReplacer(error);
 
-  return messages[key].includes(PRISMA_REPLACER_VALUE)
-    ? messages[key].replace(PRISMA_REPLACER_VALUE, replacer)
+  return messages[key]?.includes(PRISMA_REPLACER_VALUE)
+    ? messages[key]?.replace(PRISMA_REPLACER_VALUE, replacer)
     : messages[key];
 };
